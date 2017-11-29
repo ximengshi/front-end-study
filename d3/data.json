@@ -1,0 +1,82 @@
+{
+ "name": "客户拜访",
+ "children": 
+ [
+  	  { "name": "华为", 
+  		  "type":"area",
+  	  	"children": 
+  	    [
+  	      	{"name": "北京", 
+  	      	"type":"area",
+  	      	"children": 
+  	      	[
+  	          		{"name": "海淀区", 
+  	          		"type":"area",
+  	          		 "children":
+                     [
+                            {"name": "user1","pre":"5","visited":"2","notice":"true"},
+                          	{"name": "user2","pre":"4","visited":"2"},
+                          	{"name": "user3","pre":"1","visited":"1"},
+                          	{"name": "user6","pre":"1","visited":"0"}
+                     ]},
+                     {"name": "朝阳区", 
+                    		"type":"area",
+                    		 "children":
+                         [
+                                {"name": "user1","pre":"5","visited":"2","notice":"true"},
+                              	{"name": "user5","pre":"2","visited":"2"},
+                              	{"name": "user6","pre":"1","visited":"0"}
+                         ]}
+ ]}
+  	      ]},
+  	      {
+  	    	"name": "三星", 
+    		"type":"area",
+    		 "children":
+  	    	  [
+  	    	 {"name": "user1","pre":"5","visited":"2","notice":"true"},
+           	{"name": "user2","pre":"4","visited":"2"},
+           	{"name": "user4","pre":"3","visited":"2"},
+           	{"name": "user5","pre":"2","visited":"2"},
+           	{"name": "user6","pre":"1","visited":"0"}
+  	        ]},
+  	      {
+  	  	    	"name": "vivo", 
+  	    		"type":"area",
+  	    		 "children":
+  	  	    	  [
+  	  	    	 {"name": "user1","pre":"5","visited":"2","notice":"true"},
+  	           	{"name": "user2","pre":"4","visited":"2"}
+  	  	        ]},
+  	  	    {
+  	    	    	"name": "oppo", 
+  	      		"type":"area",
+  	      		 "children":
+  	    	    	  [
+  	    	    	 {"name": "user1","pre":"5","visited":"2"}
+  	    	        ]},
+  	    	      {
+  	  	    	    	"name": "小米", 
+  	  	      		"type":"area",
+  	  	      		 "children":
+  	  	    	    	  [
+  	  	    	    	 {"name": "user1","pre":"5","visited":"2","notice":"true"},
+  	  	             	{"name": "user2","pre":"4","visited":"2"},
+  	  	             	{"name": "user3","pre":"1","visited":"1"},
+  	  	             	{"name": "user4","pre":"3","visited":"2"},
+  	  	             	{"name": "user5","pre":"2","visited":"2"},
+  	  	             	{"name": "user6","pre":"1","visited":"0"}
+  	  	    	        ]},
+  	    	      {
+	  	    	    	"name": "锤子", 
+	  	      		"type":"area",
+	  	      		 "children":
+	  	    	    	  [
+	  	    	    	 {"name": "user1","pre":"5","visited":"2"},
+	  	             	{"name": "user2","pre":"4","visited":"2"},
+	  	             	{"name": "user3","pre":"1","visited":"1"},
+	  	             	{"name": "user4","pre":"3","visited":"2"},
+	  	             	{"name": "user5","pre":"2","visited":"2"},
+	  	             	{"name": "user6","pre":"1","visited":"0"}
+	  	    	        ]}
+  	  ]}

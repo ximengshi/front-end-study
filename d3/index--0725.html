@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/d3.v4.min.js"></script>
+		<style>
+		svg .area1{
+			fill:cornflowerblue;
+			}	
+			svg .area2{
+			fill:cornflowerblue;
+			}
+			svg .area3{
+			fill:cornflowerblue;	
+			}
+			svg .area{
+				fill:green;
+			}
+			path.link{
+				fill:none;
+				stroke:#666;
+				stroke-width:1.5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="visit"></div>
+		<script type="text/javascript">
+
+			var margin = {top:50,right:50,bottom:50,left:50};
+			var w = 900 - margin.left - margin.right;
+			var h = 500 - margin.top - margin.bottom;
+			var svg = d3.select("#visit")
+						.append("svg")
+						.attr("width", w + margin.left + margin.right)
+						.attr("height", h + margin.left + margin.right)
+						.append("g")
+						.attr("transform","translate("+(margin.left) +","+(margin.top) + ")");
+	
+	//节点数组
+			var nodes = [
+					{ id: "1", userName: "xx1", preTime: 3, visited: 2, brand:"m1"},
+       				{ id: "2", userName: "xx2", preTime: 4, visited: 2, brand:"m1"},
+       				{ id: "3", userName: "xx3", preTime: 3, visited: 3, brand:"m1"},
+       				{ id: "4", userName: "xx4", preTime: 1, visited: 2, brand:"m1"},
+					{ id: "5", userName: "xx5", preTime: 0, visited: 0, brand:"m2"},
+       				{ id: "6", userName: "xx6", preTime: 5, visited: 2, brand:"m2"},	
+					{ id: "7", userName: "xx7", preTime: 5, visited: 2 , brand:"m3"},
+       				{ id: "8", userName: "xx8", preTime: 5, visited: 2 , brand:"m3"},
+       				{ id: "9", userName: "xx9", preTime: 5, visited: 2 , brand:"m3"},
+       				{ id: "10", userName: "xx10", preTime: 5, visited: 2 , brand:"m3"},
+       				{ id: "11", userName: "xx11", preTime: 5, visited: 2 , brand:"m3"},
+       				{ id: "12", userName: "xx12", preTime: 5, visited: 2 , brand:"m3"}
+			];
+			
+			//连线
+			var links = [
+			]
+			
+		//添加节点
+		var area1 = svg.append("g").attr("class", "area1-wrap");
+    	  area1.selectAll("circle")
+			   .data(nodes.filter(function(d){return d.brand=="m1";}))
+			   .enter()
+			   .append("circle")
+			   .attr("class","area1")
+			   .attr("cx", function(d,i){return i*15+5;})
+    		   .attr("cy", function(d,i) { return i*20+7; })
+    		   .attr("r", 5);
+    		   
+    		area1.append("circle")
+    			 .attr("class","area")
+    			 .attr("cx",120)
+    			 .attr("cy",30)
+    			 .attr("r",10)
+    		   
+    	var area2 = svg.append("g").attr("class", "area2-wrap")
+    				.attr("transform", "translate(200,20)");
+    	  area2.selectAll("circle")
+			   .data(nodes.filter(function(d){return d.brand=="m2";}))
+			   .enter()
+			   .append("circle")
+			   .attr("class","area2")
+			   .attr("cx", function(d,i){return i*15+5;})
+    		   .attr("cy", function(d,i) { return i*20+7; })
+    		   .attr("r", 5);
+    		   
+    		   area2.append("circle")
+    			 .attr("class","area")
+    			 .attr("cx",120)
+    			 .attr("cy",30)
+    			 .attr("r",10)
+    		   
+    		   
+    	var area3 = svg.append("g").attr("class", "area3-wrap")
+    				.attr("transform", "translate(400,50)");
+    	  area3.selectAll("circle")
+			   .data(nodes.filter(function(d){return d.brand=="m3";}))
+			   .enter()
+			   .append("circle")
+			   .attr("class","area3")
+			   .attr("cx", function(d,i){return i*15+5;})
+    		   .attr("cy", function(d,i) { return i*20+7; })
+    		   .attr("r", 5);
+    		   
+    		   area3.append("circle")
+    			 .attr("class","area")
+    			 .attr("cx",120)
+    			 .attr("cy",30)
+    			 .attr("r",10)
+    		
+    		var link = svg.append("g")
+    					.attr("class","link-wrap");
+    					
+    			link.selectAll("link")
+    				
+    			
+			
+			//连线
+//		  var linkDistance = 90;
+//		  var linkLeft = svg.append("g")
+//		  					.attr("class","link-wrap")
+//		  					.attr("transform", "translate(" + (w/2) + "," + 20 + ")");
+//		  					
+//		  	linkLeft.selectAll(".link-circle.left")
+//					.data([0,1])		
+//					.enter()
+//					.append("circle")
+//					.attr("class","link-circle left")
+//					.attr("cx", function(d,i) { return i*linkDistance; })
+//  				.attr("r", 3)
+//  				.style("fill", "cornflowerblue");
+//  				
+//  		 linkLeft.append("path")
+// 					 .attr("class", "link-path")
+// 					 .attr( "d", function ( d ) {
+//       					 var dr = linkDistance;
+//       					 return [ "M", 0, 0, "A", dr, dr, "0 0 1", linkDistance, 0 ].join( " " );
+//  						});
+    
+		</script>
+	</body>
+</html>

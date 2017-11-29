@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/d3.v4.min.js"></script>
+		<style>
+		svg .quyu1{
+			fill:cornflowerblue;
+			}	
+		</style>
+	</head>
+	<body>
+		<div id="visit"></div>
+		<script type="text/javascript">
+
+			var margin = {top:50,right:50,bottom:50,left:50};
+			var w = 600;
+			var h = 500;
+//			var svg = d3.select("#visit")
+//						.append("svg")
+//						.attr("width", w)
+//						.attr("height", h);
+	
+	//用户连线数组 sorce区域名， target用户，preTime 预计拜访次数， visitied 已拜访次数
+			var links = [
+					{ source: "m1", target: "xx1", preTime: 3, visited: 2},
+       				{ source: "m1", target: "xx2", preTime: 4, visited: 2},
+       				{ source: "m1", target: "xx3", preTime: 3, visited: 3},
+       				{ source: "m1", target: "xx4", preTime: 1, visited: 2},
+					{ source: "m2", target: "xx5", preTime: 0, visited: 0},
+       				{ source: "m2", target: "xx6", preTime: 5, visited: 2},	
+					{ source: "m3", target: "xx7", preTime: 5, visited: 2},
+       				{ source: "m3", target: "xx8", preTime: 5, visited: 2},
+       				{ source: "m3", target: "xx9", preTime: 5, visited: 2},
+       				{ source: "m3", target: "xx10", preTime: 5, visited: 2},
+       				{ source: "m3", target: "xx11", preTime: 5, visited: 2},
+       				{ source: "m3", target: "xx12", preTime: 5, visited: 2}
+			];
+			
+			//用户节点
+			var nodes = {};
+
+			links.forEach(function(link) {  
+  link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});  
+  link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});  
+});		
+		
+		var force = d3.layout.force()  //layout将json格式转化为力学图可用的格式
+    .nodes(d3.values(nodes))//设定节点数组
+    .links(links)//设定连线数组
+    .size([w, h])//作用域的大小
+    .linkDistance(60)//连接线长度
+    .charge(-300)//顶点的电荷数。该参数决定是排斥还是吸引，数值越小越互相排斥
+    .on("tick", tick)//指时间间隔，隔一段时间刷新一次画面
+    .start();		//开始转换
+	
+	var svg = d3.select("#visit").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+    
+		
+		</script>
+	</body>
+</html>

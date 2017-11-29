@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/d3.v4.min.js"></script>
+		<style>
+		svg .user{
+			fill:cornflowerblue;
+			}	
+			svg .area{
+				fill:green;
+			}
+		svg .links{
+			fill:none;
+			stroke:#6495ED;
+			stroke-width: 1px;
+		}
+		svg .visited{
+			fill:none;
+			stroke:green;
+			stroke-width: 1px;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="visit"></div>
+		
+		<script type="text/javascript">
+var width = 960,
+    height = 500,
+    radius = 240;
+    
+    //path起点坐标
+    var mx;
+    var my = 20;
+    
+    //path终点坐标
+    var mx2;
+    var my2 = 20;
+    
+    dataset = {
+    	nodes:[
+   		{"name":"user1","pre":5,"visited":2, "group":"user"},
+   		{"name":"user2","pre":3,"visited":1, "group":"user"},
+   		{"name":"user3","pre":3,"visited":2, "group":"user"},
+   		{"name":"user4","pre":4,"visited":0, "group":"user"},
+   		{"name":"user5","pre":2,"visited":2, "group":"user"},
+   		{"typename":"area1", "group":"area"}
+    ],
+    links:[
+    {"source":0,"target":5,"type":"visited"},
+    {"source":0,"target":5,"type":"visited"},
+    {"source":0,"target":5,"type":"pre"},
+    {"source":0,"target":5,"type":"pre"},
+    {"source":0,"target":5,"type":"pre"},
+    {"source":1,"target":5,"type":"visited"},
+    {"source":1,"target":5,"type":"pre"},
+    {"source":1,"target":5,"type":"pre"},
+    {"source":2,"target":5,"type":"visited"},
+    {"source":2,"target":5,"type":"visited"},
+    {"source":2,"target":5,"type":"pre"},
+    {"source":3,"target":5,"type":"pre"},
+    {"source":3,"target":5,"type":"pre"},
+    {"source":3,"target":5,"type":"pre"},
+    {"source":3,"target":5,"type":"pre"},
+    {"source":4,"target":5,"type":"visited"},
+    {"source":4,"target":5,"type":"visited"}
+    ]
+    }
+
+  //定义svg  
+var svg = d3.select("#visit")
+			.append("svg")
+   		    .attr("width", width)
+            .attr("height", height);
+         
+         //区域分组
+        var area = svg.append("g")
+            .attr("class","area-wrap")
+            .attr("transform","translate(100,200)");
+     
+     //节点
+    area.selectAll("circle")
+    	.data(dataset.nodes)
+    	.enter()
+    	.append("circle")
+    	.attr("cx",function(d,i){
+    		if(d.group == "user"){
+    			mx = 50;
+    			return mx;
+    		}else{
+    			mx2 = 350;
+    			return 350;
+    		}
+    	})
+    	.attr("cy",function(d,i){
+    		if(d.group == "user"){
+    		my = 20+20*i;
+    		return my;
+    		}else{
+    			return 20;
+    		}
+    	})
+    	.attr("r",function(d){
+    		if(d.group == "user"){
+    			return 5;
+    		}else{
+    			return 10;
+    		}
+    	})
+    	.attr("class",function(d){
+    		if(d.group == "user"){
+    			return "user";
+    		}else{
+    			return "area";
+    		}
+    	});
+
+//曲线
+area.selectAll("path")
+		.data(dataset.links)
+		.enter()
+    	.append("path")
+    	.attr("class",function(d){
+			if(d.type == "visited"){
+				return "links visited";
+			}else{
+				return "links";
+			}
+		})
+		.attr("d",function(d,i){
+			if(i <= d.length/2){
+          return "M " + mx + " " + my +" C" + (mx+(mx2-mx)/4) + " " + (mx+15*i) + ", " + (mx+(mx2-mx)/2) + " " + (mx+15*i) + "," + mx2 + " "+ my2;
+         }else{
+         	return "M " + mx + " " + my +" C" + (mx+(mx2-mx)/4) + " " + (mx-15*i) + ", " + (mx+(mx2-mx)/2) + " " + (mx-15*i) + "," + mx2 + " "+ my2;
+         }
+		});
+		</script>
+	</body>
+</html>
