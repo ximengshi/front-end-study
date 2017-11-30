@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>3D图片轮播</title>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0
+			}
+			
+			ul,
+			li {
+				list-style: none;
+			}
+			
+			a {
+				text-decoration: none;
+			}
+			
+			img {
+				border: none;
+				outline: none;
+			}
+			
+			.slide-box {
+				position: relative;
+				width: 100%;
+				height: 400px;
+				margin-top: 100px;
+				border: 1px solid #aaa;
+			}
+			
+			.btn {
+				position: absolute;
+				top: 50%;
+				width: 40px;
+				height: 40px;
+				margin-top: -20px;
+				line-height: 40px;
+				text-align: center;
+				font-size: 34px;
+				color: #fff;
+				background: #efefef;
+			}
+			
+			.btn:hover {
+				background: #aaa;
+			}
+			
+			.prev {
+				left: 0;
+			}
+			
+			.next {
+				right: 0;
+			}
+			
+			.slide {
+				position: absolute;
+				left: 50%;
+				width: 1200px;
+				height: 400px;
+				overflow: hidden;
+				margin-left: -600px;
+			}
+			
+			.slide li {
+				position: absolute;
+				top: 0;
+				left: 0;
+				/*opacity: 0;*/
+				transition: all 0.3s ease-out;
+				border:1px solid #333;
+			}
+			
+			.slide li a {
+				display: block;
+				width: 700px;
+				height: 200px;
+				float: left;
+			}
+			
+			.slide li a img {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.list1 {
+				transform: translate3d(250px, 150px, 0) scale(1);
+				opacity: 1;
+				z-index: 7;
+			}
+			
+			.list2 {
+				transform: translate3d(560px, 100px, -20px) scale(0.7);
+				opacity: 0.8;
+				z-index: 6;
+			}
+			
+			.list3 {
+				transform: translate3d(570px, 50px, -40px) scale(0.6);
+				z-index: 5;
+				opacity: 0.6;
+			}
+			
+			.list4 {
+				transform: translate3d(300px, 0, -60px) scale(0.4);
+				opacity: 0.4;
+				z-index: 4;
+			}
+			
+			.list5 {
+				transform: translate3d(20px, 50px, -40px) scale(0.6);
+				opacity: 0.6;
+				z-index: 5;
+			}
+			
+			.list6 {
+				transform: translate3d(-105px, 100px, -20px) scale(0.7);
+				opacity: 0.8;
+				z-index: 6;
+			}
+			
+			.buttons {
+				position: absolute;
+				width: 1200px;
+				height: 30px;
+				bottom: 0;
+				left: 50%;
+				margin-left: -600px;
+				text-align: center;
+				z-index: 9;
+			}
+			
+			.buttons a {
+				display: inline-block;
+				width: 35px;
+				height: 5px;
+				background: red;
+			}
+			
+			.buttons .blue {
+				background: blue;
+			}
+		</style>
+	</head>
+	<style>
+
+	</style>
+
+	<body>
+
+		<div class="slide-box">
+			<div class="slide">
+				<ul>
+					<li class="list1">
+						<a href="#"><img src="img/111.png" alt="" /></a>
+					</li>
+					<li class="list2">
+						<a href="#"><img src="img/222.jpg" alt="" /></a>
+					</li>
+					<li class="list3">
+						<a href="#"><img src="img/333.png" alt="" /></a>
+					</li>
+					<li class="list4">
+						<a href="#"><img src="img/444.png" alt="" /></a>
+					</li>
+					<li class="list5">
+						<a href="#"><img src="img/555.png" alt="" /></a>
+					</li>
+					<li class="list6">
+						<a href="#"><img src="img/666.png" alt="" /></a>
+					</li>
+				</ul>
+			</div>
+			<a href="javascript:;" class="prev btn"><</a>
+			<a href="javascript:;" class="next btn">></a>
+			<div class="buttons">
+				<a href="javascript:;" class="blue"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+			</div>
+		</div>
+
+		<script>
+			var $a = $(".buttons a");
+			var lArr = ["list1", "list2", "list3", "list4", "list5", "list6"];
+			var index = 0;
+
+			//进入页面自动开始定时器
+			time = setInterval(next, 2000);
+
+			//鼠标移入slide-box时清除定时器
+			$(".slide-box").mouseover(function() {
+				clearInterval(time);
+			})
+
+			//鼠标移出slide-box时开始定时器
+			$(".slide-box").mouseout(function() {
+				time = setInterval(next, 2000);
+			})
+
+			//点击向右箭头
+			$(".next").click(function() {
+				next();
+			});
+
+			//点击向左箭头
+			$(".prev").click(function() {
+				prev();
+			});
+
+			//	上一张
+			function prev() {
+				lArr.unshift(lArr[lArr.length - 1]); //unshift() 向数组的开头添加一个或更多元素，并返回新的长度
+				lArr.pop(); //pop() 删除并返回数组的最后一个元素
+				//i是元素的索引，从0开始
+				//e为当前处理的元素
+				//each循环，当前处理的元素移除所有的class，然后添加数组索引i的class
+				$("li").each(function(i, e) {
+					$(e).removeClass().addClass(lArr[i]);
+				});
+				index--;
+				if(index < 0) {
+					index = lArr.length - 1;
+				}
+				aShow();
+			}
+
+			//	下一张
+			function next() {
+				lArr.push(lArr[0]); //push() 向数组的最后添加一个或更多元素，并返回新的长度
+				lArr.shift(); //shift() 把数组的第一个元素从其中删除，并返回第一个元素的值
+				//i是元素的索引，从0开始
+				//e为当前处理的元素
+				//each循环，当前处理的元素移除所有的class，然后添加数组索引i的class
+				$("li").each(function(i, e) {
+					$(e).removeClass().addClass(lArr[i]);
+				});
+				index++;
+				if(index > lArr.length - 1) {
+					index = 0;
+				}
+				aShow();
+			}
+
+			//通过底部按钮点击切换
+			$a.each(function() {
+				$(this).click(function() {
+					var myindex = $(this).index();
+					var b = myindex - index;
+					if(b == 0) {
+						return;
+					} else if(b > 0) {
+						/*
+						 * splice(0,b)的意思是从索引0开始,取出数量为b的数组
+						 * 因为每次点击之后数组都被改变了,所以当前显示的这个照片的索引才是0
+						 * 所以取出从索引0到b的数组,就是从原本的这个照片到需要点击的照片的数组
+						 * 这时候原本的数组也将这部分数组进行移除了
+						 * 再把移除的数组添加的原本的数组的后面
+						 */
+						var newArr = lArr.splice(0, b);
+						lArr = $.merge(lArr, newArr); //$.merge() 合并两个数组内容到第一个数组
+						$("li").each(function(i, e) {
+							$(e).removeClass().addClass(lArr[i]);
+						});
+						index = myindex;
+						aShow();
+					} else if(b < 0) {
+						/*
+						 * 因为b<0,所以取数组的时候是倒序来取的,也就是说我们可以先把数组的顺序颠倒一下
+						 * 而b现在是负值,所以取出索引0到-b即为需要取出的数组
+						 * 也就是从原本的照片到需要点击的照片的数组
+						 * 然后将原本的数组跟取出的数组进行拼接
+						 * 再次倒序,使原本的倒序变为正序
+						 */
+						lArr.reverse(); //reverse() 颠倒数组中元素的顺序
+						var oldArr = lArr.splice(0, -b);
+						lArr = $.merge(lArr, oldArr);
+						lArr.reverse();
+						$("li").each(function(i, e) {
+							$(e).removeClass().addClass(lArr[i]);
+						});
+						index = myindex;
+						aShow();
+					}
+				});
+			})
+
+			//	改变底部按钮的背景色
+			function aShow() {
+				$a.eq(index).addClass("blue").siblings().removeClass("blue");
+			}
+		</script>
+	</body>
+
+</html>
