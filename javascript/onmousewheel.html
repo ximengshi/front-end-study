@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>鼠标滚轮滚动，图片缩放</title>
+		<style type="text/css">
+			div {
+				width: 300px;
+				height: 300px;
+				margin: 10px auto;
+				border: 1px solid #000;
+				overflow: hidden;
+			}
+			
+			img {
+				width: 100%;
+				height: 100%;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="div">
+			<img id="img" src="img/service.png" />
+		</div>
+		<script type="text/javascript">
+			window.onload = function() {
+				var i = 0; //鼠标滚轮滚动次数
+				var img = document.getElementById("img");
+				var w = img.width;
+				var h = img.height;
+				
+				//图片放大
+				function bigger() {
+					i++;
+					w += Math.abs(i) * 5;
+					h += Math.abs(i) * 5;
+					img.style.width = w + "px";
+					img.style.height = h + "px";
+				}
+				
+				//图片缩小
+				function less() {
+					i--;
+					w -= Math.abs(i) * 5; //Math.abs()取绝对值
+					h -= Math.abs(i) * 5;
+					img.style.width = w + "px";
+					img.style.height = h + "px";
+				}
+				//firefox注册事件 addEventListener()
+				//navigator.userAgent判断浏览器类型
+				var useragent = navigator.userAgent;
+				if(/Firefox/i.test(useragent)) {
+					document.addEventListener("DOMMouseScroll", function(e) {
+						e = e || window.event;
+						var detail = e.detail;
+						if(detail > 0) {
+							bigger();
+						} else {
+							less();
+						}
+					});
+				} else {
+					//除firefox外均可使用HTML DOM方式添加事件
+					document.onmousewheel = function(e) {
+						e = e || window.event;
+						var wheelDelta = e.wheelDelta;
+						if(wheelDelta > 0) {
+							less();
+						} else {
+							bigger();
+						}
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>
