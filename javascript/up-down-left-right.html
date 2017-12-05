@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jquery实现内容左移、右移、上移、下移、置顶、置底、全选、反选、双击移动功能</title>
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<style>
+	ul,li{padding:0; margin:0; list-style: none; list-style: inline;}
+	input{cursor:pointer;}
+	.move-wrap{width:600px; margin:0 auto; overflow:hidden;}
+	.move-box{width:220px; float:left;} 
+	.move-center{width:50px; margin-right:8px; padding-top:70px; text-align:center; float:left;}
+	.move-center input{margin-bottom:10px;}
+	.icon-box{width:55px; margin-left:10px; padding-top:40px; float:left;}
+	.icon-box input{display:block; margin-bottom:10px;}
+	.sel{height:40px; line-height:40px; border-bottom:1px solid #666;}
+	.sel li{display:inline-block; margin-right:10px; cursor:pointer;}
+	.select-box{width:150px;float:left; border:1px solid #666;}
+	.option-box{height:180px; overflow-y:scroll;}
+	.option-box li{cursor:pointer; margin-bottom:10px;}
+	</style>
+<script>
+$(function(){
+//全选、全不选
+//版本较高的jquery可以使用prop()方法，一般html元素本身自带的固有属性用prop()方法，我们自定义的DOM属性用attr()方法
+$('.select-all').on('click',function(){
+	var a = $(this).parents('.sel').next('.option-box').find('input');
+	if($(this).is(':checked')){
+		a.prop('checked',true);
+	}else{
+		a.prop('checked',false);
+	}
+});
+	
+//反选
+$('.select-no').on('click',function(){
+	var b = $(this).parents('.sel').next('.option-box').find('input');
+	b.each(function(){
+		$(this).prop('checked',!$(this).prop('checked'));
+	})
+});
+
+// 根据下方复选框情况，全选/反选的复选框自动选中或取消
+//左边全选/反选复选框选中、取消
+function judge1(){
+if($("#optionBox1 input").length == $("#optionBox1 input:checked").length){
+			$("#sel1 .select-all").prop("checked",true);
+		}else{
+			$("#sel1 .select-all").prop("checked",false);
+		}	
+}
+//右边全选/反选复选框选中、取消
+function judge2(){
+	if($("#optionBox2 input").length == $("#optionBox2 input:checked").length){
+			$("#sel2 .select-all").prop("checked",true);
+		}else{
+			$("#sel2 .select-all").prop("checked",false);
+		}
+}
+	$("#optionBox1 input").on("click",function(){
+		judge1();
+		$("#sel1 .select-no").prop("checked",false);
+	});
+	$("#optionBox2 input").on("click",function(){
+		judge2();
+		$("#sel2 .select-no").prop("checked",false);
+	});
+	$("#sel1 .select-no").on("click",function(){
+		judge1();
+	});
+	$("#sel2 .select-no").on("click",function(){
+		judge2();
+	});
+	
+//右移
+$('.right').on('click',function(){
+	$('#optionBox1 input:checked').parent().appendTo('#optionBox2');
+	$("#sel1 .select-no").prop("checked",false);
+	if($("#optionBox1 input").length==0){
+		$("#sel1 .select-all").prop("checked",false);
+	}
+	if($("#optionBox2 input").length == $("#optionBox2 input:checked").length){
+		$("#sel2 .select-all").prop("checked",true);
+	}
+});
+	
+//左移
+$('.left').on('click',function(){
+	$('#optionBox2 input:checked').parent().appendTo('#optionBox1');
+	$("#sel2 .select-no").prop("checked",false);
+	if($("#optionBox2 input").length==0){
+		$("#sel2 .select-all").prop("checked",false);
+	}
+	if($("#optionBox1 input").length == $("#optionBox1 input:checked").length){
+		$("#sel1 .select-all").prop("checked",true);
+	}
+});
+	
+//上移
+$('#moveBox1 .up').on('click',function(){
+	$.each($('#optionBox1 input:checked'), function(){
+		var onthis = $(this).parent();
+		onthis.prev().before(onthis);
+	});
+});
+$('#moveBox2 .up').on('click',function(){
+	$.each($('#optionBox2 input:checked'), function(){
+		var onthis = $(this).parent();
+		onthis.prev().before(onthis);
+	});
+});
+	
+//下移
+//	下移不能像上移一样用以下这个思路,会导致当多选为连续两个选项时,点击下移不起作用.
+$('#moveBox1 .down').on('click',function(){
+	//jQuery.makeArray()将一个类数组对象转换成真正的数组对象
+	//reverse()将数组中的元素倒序排列
+	var reverseChecked = jQuery.makeArray($("#optionBox1 input:checked")).reverse();
+	$.each(reverseChecked,function(){
+		var checkedLab = $(this).parent();
+		var downLab = checkedLab.next();
+		checkedLab.insertAfter(downLab);
+	});
+});
+$('#moveBox2 .down').on('click',function(){
+	var reverseChecked = jQuery.makeArray($("#optionBox2 input:checked")).reverse();
+	$.each(reverseChecked,function(){
+		var checkedLab = $(this).parent();
+		var downLab = checkedLab.next();
+		checkedLab.insertAfter(downLab);
+	});
+});
+	
+//置顶
+$('#moveBox1 .top').on('click',function(){
+	$.each($('#optionBox1 input:checked'), function(){
+		var onthis = $(this).parent();
+		$('#optionBox1').prepend(onthis);
+	});
+});
+$('#moveBox2 .top').on('click',function(){
+	$.each($('#optionBox2 input:checked'), function(){
+		var onthis = $(this).parent();
+		$('#optionBox2').prepend(onthis);
+	});
+});
+	
+//置底
+$('#moveBox1 .bottom').on('click',function(){
+	$.each($('#optionBox1 input:checked'), function(){
+		var onthis = $(this).parent();
+		onthis.appendTo('#optionBox1');
+	});
+});
+$('#moveBox2 .bottom').on('click',function(){
+	$.each($('#optionBox2 input:checked'), function(){
+		var onthis = $(this).parent();
+		onthis.appendTo('#optionBox2');
+	});
+});
+	
+});
+</script>
+</head>
+<body>
+<div class="move-wrap">
+<div class="move-box" id="moveBox1">
+<div class="icon-box">
+<input type="button" value="置顶" class="top">
+<input type="button" value="上移" class="up">
+<input type="button" value="下移" class="down">
+<input type="button" value="置底" class="bottom">
+</div>
+<div class="select-box">
+<ul class="sel" id="sel1"><li><input type="checkbox" class="select-all">全选</li><li><input type="checkbox" class="select-no">反选</li></ul>
+<ul class="option-box" id="optionBox1">
+<li><input type="checkbox">选项1</li>
+<li><input type="checkbox">选项2</li>
+<li><input type="checkbox">选项3</li>
+<li><input type="checkbox">选项4</li>
+<li><input type="checkbox">选项5</li>
+<li><input type="checkbox">选项6</li>
+<li><input type="checkbox">选项7</li>
+<li><input type="checkbox">选项8</li>
+</ul>
+</div>
+</div>
+<div class="move-center">
+<input type="button" class="right" value=">>">
+<input type="button" class="left" value="<<">
+</div>
+<div class="move-box" id="moveBox2">
+<div class="select-box">
+<ul class="sel" id="sel2"><li><input type="checkbox" class="select-all">全选</li><li><input type="checkbox" class="select-no">反选</li></ul>
+<div class="option-box" id="optionBox2">
+<li><input type="checkbox">选项9</li>
+<li><input type="checkbox">选项10</li>
+<li><input type="checkbox">选项11</li>
+<li><input type="checkbox">选项12</li>
+<li><input type="checkbox">选项13</li>
+<li><input type="checkbox">选项14</li>
+<li><input type="checkbox">选项15</li>
+<li><input type="checkbox">选项16</li>
+</div>
+</div>
+<div class="icon-box">
+<input type="button" value="置顶" class="top">
+<input type="button" value="上移" class="up">
+<input type="button" value="下移" class="down">
+<input type="button" value="置底" class="bottom">
+</div>
+</div>
+</div>
+	
+</body>
+</html>
