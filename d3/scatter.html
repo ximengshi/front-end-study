@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>D3.v4-散点图</title>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/d3.v4.min.js"></script>
+		<style type="text/css">
+			svg{padding:20px;}
+			circle{cursor: pointer;}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var dataset = [[2,5],[4,27],[8,10],[11,23],[9,5],[7,29],[12,18],[3,26],[1,9],[18,22],[22,27],[8,3]];
+			var w = 600;
+			var h = 600;
+			var xW = 300;  //x轴宽
+			var yW = 300;  //y轴宽
+			var color = d3.scaleOrdinal(d3.schemeCategory20b);
+			
+			//定义比例尺
+			var xlinear = d3.scaleLinear()
+			.domain([0,30])
+			.range([0,xW]);
+			
+			var ylinear = d3.scaleLinear()
+			//定义域翻转，为了让y轴的刻度值从上到下数值一次减小
+			.domain([30,0])
+			.range([0,yW]);
+			
+			//定义画布
+			var svg = d3.select("body")
+			.append("svg")
+			.attr("width",w)
+			.attr("height",h);
+			
+			//画圆点
+			svg.append("g")
+			.attr("class","cir")
+			.selectAll("circle")
+			.data(dataset)
+			.enter()
+			.append("circle")
+			.attr("cx",function(d){
+				//圆点的位置通过比例尺缩放
+				return xlinear(d[0]);  
+			})
+			.attr("cy",function(d){
+				return ylinear(d[1]);
+			})
+			.attr("transform","translate(20,0)")
+			.attr("r",5)
+			.attr("fill",function(d){
+				//每个圆点对应不同的颜色
+				return color(d);
+			});
+			
+			//text文字
+			var txt = svg.append("g")
+			.attr("class","txt")
+			.selectAll("circle")
+			.data(dataset)
+			.enter()
+			.append("text")
+			.text(function(d){
+				return "[" + d[0] + "," + d[1] + "]";
+			})
+			.attr("x",function(d){
+				//+25是为了让文字相对圆点向右偏移25，避免文字与圆点重叠
+				return xlinear(d[0])+25;  
+			})
+			.attr("y",function(d){
+				return ylinear(d[1])-5;  
+			})
+			.attr("font-size","12px");
+			
+			
+			//坐标轴
+			var xAxis = d3.axisBottom(xlinear)
+			.ticks(12);
+			
+			var yAxis = d3.axisLeft(ylinear)
+			.ticks(6)
+			.tickSizeInner(5)  //内刻度线长度
+			.tickSizeOuter(10) //外刻度线长度
+			.tickPadding(10)  //刻度值与刻度线之间的距离
+			.tickValues([1,2,3,6,13,22])
+			.tickFormat(d3.format(".0f"));
+			
+			svg.append("g")
+			.attr("class","xaxis")
+			.attr("transform","translate(20,300)")
+			.call(xAxis);
+			
+			svg.append("g")
+			.attr("class","yaxis")
+			.attr("transform","translate(20,0)")
+			.call(yAxis);
+			
+		</script>
+	</body>
+</html>
